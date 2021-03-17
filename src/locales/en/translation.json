@@ -1,0 +1,57 @@
+{
+    "asset" : "Asset",
+    "criteria" : "Criteria",
+    "management" : "Management",
+
+    "assetName" : "Asset name",
+    "department" : "Department",
+    "countryOfDepartment" : "Country of department",
+    "emailAddressOfDepartment" : "Email of department",
+    "broken" : "Is Broken?",
+    "purchaseDate" : "Purchase Date",
+
+    "search" : "Search",
+    "create" : "Create",
+    "edit" : "Edit",
+    "new" : "new",
+    "didYouMean" : "Did you mean",
+    "thenPress" : "Then press",
+    "inThisInput" : "in this input.",
+    "enter" : "ENTER",
+    "delete" : "Delete",
+    "apply" : "Apply",
+    "reset" : "Reset",
+    "unexpectedError" : "An unexpected error happened... Try again later or check your data.",
+
+    "areYouSure" : "Are you sure?",
+    "resetConsequence" : "If you reset you cannot get back to the your actual progress.",
+    "deleteConsequence" : "If you delete this asset it would not be available anymore.",
+    "submissionConsequence" : "If you submit this asset you can change it or delete it later.",
+    
+    "success" : "Excelent",
+    "problem" : "Oh no...",
+
+    "updateSuccessfullMessage" : "The asset was updated without any issues.",
+    "creationSuccessfullMessage" : "The asset was created successfully.",
+    "deletionSuccessfullMessage" : "The asset was deleted successfully.",
+
+    "denial" : "Cancel",
+    "approval" : "Ok",
+
+    "validations" : {
+        "default": "${$displayName} is invalid.",
+        "required": "${$displayName} is required.",
+        "matches": "${$displayName} is not correctly formatted.",
+        "email": "${$displayName} is not a valid email.",
+        "minLength": "${$displayName} must be at least ${$config.length} character${$config.length === 1 ? '' : 's'}.",
+        "maxLength": "${$displayName} cannot be longer than ${$config.length} character${$config.length === 1 ? '' : 's'}.",
+        "minItems": "${$displayName} must contain at least ${$config.count} item${$config.count === 1 ? '' : 's'}.",
+        "maxItems": "${$displayName} cannot contain more than ${$config.count} item${$config.count === 1 ? '' : 's'}.",
+        "min": "${$displayName} must be at least ${$config.constraint}.",
+        "max": "${$displayName} must be at most ${$config.constraint}.",
+        "range": "${$displayName} must be between or equal to ${$config.min} and ${$config.max}.",
+        "between": "${$displayName} must be between but not equal to ${$config.min} and ${$config.max}.",
+        "equals": "${$displayName} must be ${$config.expectedValue}.",
+        "cannotBeOlderThanAYear" : "The ${$displayName} cannot be older than a year."
+    }
+}

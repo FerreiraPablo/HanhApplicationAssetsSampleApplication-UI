@@ -1,0 +1,146 @@
+<template>
+  <div class="row">
+    <div class="col-12 col-sm-6 col-md-4">
+      <div class="card">
+        <div class="card-body">
+          <div class="row">
+            <div class="col">
+              <h5 class="card-title text-primary mb-0" t="$t(search) $t(asset)"></h5>
+            </div>
+          </div>
+          <hr>
+          <div class="row">
+            <div class="col">
+              <div class="form-group">
+                <label class="control-label" for="name"><span t="$t(criteria)">Criteria</span> <span
+                    class="fa fa-spin fa-circle-o-notch" if.bind="isLoading"></span></label>
+                <input value.bind="filters.criteria" keyup.delegate="search()" class="form-control" type="text"
+                  id="searchCriteria" name="searchCriteria" placeholder="Pencil...">
+              </div>
+            </div>
+          </div>
+        </div>
+        <a class="card-body border-top" repeat.for="asset of assets" href.bind="'#/edit/' + asset.id">
+          <b class="text-primary">
+            ${asset.assetName}
+          </b>
+          <br>
+
+          <small class="text-muted float-right">${moment(asset.purchaseDate).fromNow()}</small>
+          <small class="text-muted">${assetService.departments[asset.department].name}</small>
+        </a>
+
+        <a class="card-body border-top text-white bg-primary text-center" href="#create">
+          <span class="fa fa-plus"></span> <span t="$t(create) $t(new) $t(asset)">Create new asset</span>
+        </a>
+      </div>
+    </div>
+    <div class="col">
+      <div class="card">
+        <div class="card-body">
+          <div class="row">
+            <div class="col">
+              <h5 class="card-title text-primary mb-0">${asset.id ? i18n.tr('edit') + " " + i18n.tr('asset') + " #" +
+                asset.id : i18n.tr('create') + " " + i18n.tr('asset')}</h5>
+            </div>
+          </div>
+          <hr>
+          <div class="row">
+            <div class="col">
+              <div class="form-group" validation-errors.bind="assetNameErrors">
+                <label class="control-label" for="assetName" t="$t(assetName)"></label>
+                <input value.bind="asset.assetName & validate"
+                  class="form-control ${ assetNameErrors.length ? 'is-invalid' : ''}" type="text" id="assetName"
+                  name="assetName" placeholder="Potato chips...">
+                <small class="text-danger" repeat.for="errorInfo of assetNameErrors">
+                  ${errorInfo.error.message}<br />
+                </small>
+              </div>
+            </div>
+            <div class="col">
+              <div class="form-group" validation-errors.bind="departmentErrors">
+                <label class="control-label" for="department" t="$t(department)"></label>
+                <select value.bind="asset.department & validate"
+                  class="form-control ${ departmentErrors.length ? 'is-invalid' : ''}" name="department"
+                  id="department">
+                  <option model.bind="department.id" repeat.for="department of assetService.departments">
+                    ${department.name}</option>
+                </select>
+                <small class="text-danger" repeat.for="errorInfo of departmentErrors">
+                  ${errorInfo.error.message}<br />
+                </small>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col">
+              <div class="form-group" validation-errors.bind="countryOfDepartmentErrors">
+                <label class="control-label" for="countryOfDepartment"> <span t="$t(countryOfDepartment)">Country of
+                    deparment</span> <span class="fa fa-spin fa-circle-o-notch"
+                    if.bind="isLoadingCountrySuggestions"></span></label>
+
+                <input value.bind="asset.countryOfDepartment & validate" keyup.delegate="searchCountry($event)"
+                  class="form-control ${ countryOfDepartmentErrors.length ? 'is-invalid' : ''}" type="text"
+                  id="countryOfDepartment" name="countryOfDepartment" placeholder="Aruba">
+
+                <small class="text-danger" repeat.for="errorInfo of countryOfDepartmentErrors">
+                  ${errorInfo.error.message}<br />
+                </small>
+                <small class="text-muted" if.bind="countrySuggestion && countrySuggestion.length">
+                  <span t="didYouMean">Did you mean
+                  </span> ${countrySuggestion}? <span t="thenPress">Then press</span> <span class="badge badge-primary">
+                    <b t="$t(enter)">Enter</b></span> <span t="$t(inThisInput)">in this input</span>
+                  <br></small>
+
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col">
+              <div class="form-group" validation-errors.bind="emailAddressOfDepartmentErrors">
+                <label class="control-label" for="emailAddressOfDepartment" t="emailAddressOfDepartment">Email</label>
+                <input value.bind="asset.emailAddressOfDepartment & validate" class="form-control ${ emailAddressOfDepartmentErrors.length ? 'is-invalid' : ''}" type="email"
+                  id="emailAddressOfDepartment" name="emailAddressOfDepartment" placeholder="xyz@soso.net">
+                <small class="text-danger" repeat.for="errorInfo of emailAddressOfDepartmentErrors">
+                  ${errorInfo.error.message}<br />
+                </small>
+              </div>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col">
+              <div class="form-group">
+                <label class="control-label" for="broken" t="broken">Is Broken?</label>
+                <select value.bind="asset.broken" class="form-control " name="broken" id="broken">
+                  <option model.bind="false" selected>No</option>
+                  <option model.bind="true">Yes</option>
+                </select>
+              </div>
+            </div>
+            <div class="col">
+              <div class="form-group" validation-errors.bind="purchaseDateErrors">
+                <label class="control-label" for="purchaseDate"><span t="$t(purchaseDate)">Purchase date</span></label>
+                <input value.bind="asset.purchaseDate & validate" class="form-control ${ purchaseDateErrors.length ? 'is-invalid' : ''}" type="date" id="purchaseDate"
+                  name="purchaseDate">
+                <small class="text-danger" repeat.for="errorInfo of purchaseDateErrors">
+                  ${errorInfo.error.message}<br />
+                </small>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="row mt-3">
+        <div class="col text-right">
+          <button class="btn btn-danger" click.delegate="deleteAsset()" if.bind="asset.id" t="delete">Delete
+            asset</button>
+          <button class="btn btn-primary" click.delegate="restoreAsset()" disabled.bind="!isModified"
+            t="reset">Reset</button>
+          <button class="btn btn-primary" click.delegate="submit()" disabled.bind="!isValid" t="apply">Apply
+            Changes</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</template>
